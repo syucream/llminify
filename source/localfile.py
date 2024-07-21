@@ -3,7 +3,7 @@ import os
 from source.utils import is_allowed_filetype, process_ipynb_file
 
 
-def process_local_directory(local_path, output):
+def process_local_directory(local_path: str, output):
     for root, dirs, files in os.walk(local_path):
         for file in files:
             if is_allowed_filetype(file):
@@ -24,7 +24,10 @@ def process_local_directory(local_path, output):
                 output.write("\n\n")
 
 
-def process_local_folder(local_path, output_file):
+def process_local_folder(local_path: str, output_file: str):
+    if not os.path.exists(local_path):
+        raise FileNotFoundError(f"Directory {local_path} does not exist.")
+
     with open(output_file, "w", encoding="utf-8") as output:
         process_local_directory(local_path, output)
 
