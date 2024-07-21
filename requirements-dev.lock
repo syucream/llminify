@@ -119,11 +119,13 @@ traitlets==5.14.3
     # via nbformat
 typer==0.12.3
     # via llminify
+types-requests==2.32.0.20240712
 typing-extensions==4.12.2
     # via mypy
     # via typer
 urllib3==2.2.2
     # via requests
+    # via types-requests
 webencodings==0.5.1
     # via bleach
     # via tinycss2

@@ -1,7 +1,7 @@
 import os
-from nbconvert import PythonExporter
-import nbformat
 import requests
+
+from source.utils import is_allowed_filetype, process_ipynb_file
 
 
 TOKEN = os.getenv("GITHUB_TOKEN", "default_token_here")
@@ -16,38 +16,6 @@ def download_file(url, target_path):
     response.raise_for_status()
     with open(target_path, "wb") as f:
         f.write(response.content)
-
-
-def is_allowed_filetype(filename):
-    allowed_extensions = [
-        ".py",
-        ".txt",
-        ".js",
-        ".tsx",
-        ".ts",
-        ".md",
-        ".cjs",
-        ".html",
-        ".json",
-        ".ipynb",
-        ".h",
-        ".localhost",
-        ".sh",
-        ".yaml",
-        ".example",
-    ]
-    return any(filename.endswith(ext) for ext in allowed_extensions)
-
-
-def process_ipynb_file(temp_file):
-    with open(temp_file, "r", encoding="utf-8", errors="ignore") as f:
-        notebook_content = f.read()
-
-    exporter = PythonExporter()
-    python_code, _ = exporter.from_notebook_node(
-        nbformat.reads(notebook_content, as_version=4)
-    )
-    return python_code
 
 
 def process_directory(url: str, output):

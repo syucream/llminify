@@ -1,7 +1,7 @@
 import re
 
-import nltk
-from nltk.corpus import stopwords
+import nltk  # type: ignore
+from nltk.corpus import stopwords  # type: ignore
 
 nltk.download("stopwords", quiet=True)
 stop_words = set(stopwords.words("english"))

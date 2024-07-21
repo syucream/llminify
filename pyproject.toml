@@ -25,6 +25,7 @@ managed = true
 dev-dependencies = [
     "ruff>=0.5.1",
     "mypy>=1.10.1",
+    "types-requests>=2.32.0.20240712",
 ]
 
 [tool.hatch.metadata]
@@ -32,3 +33,6 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["."]
+
+[mypy-nltk]
+ignore_missing_imports = true
