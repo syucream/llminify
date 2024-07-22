@@ -12,25 +12,26 @@ def safe_file_read(filepath, fallback_encoding="latin1"):
             return file.read()
 
 
-def run_minify(path: str):
+def run_minify(path: str, compress: bool):
     output_file = "uncompressed_output.txt"
     processed_file = "compressed_output.txt"
 
     process_local_folder(path, output_file)
-
-    preprocess_text(output_file, processed_file)
-
-    compressed_text = safe_file_read(processed_file)
-    compressed_token_count = get_token_count(compressed_text)
-    print(
-        f"\n[bright_green]Compressed Token Count:[/bright_green] [bold bright_cyan]{compressed_token_count}[/bold bright_cyan]"
-    )
 
     uncompressed_text = safe_file_read(output_file)
     uncompressed_token_count = get_token_count(uncompressed_text)
     print(
         f"[bright_green]Uncompressed Token Count:[/bright_green] [bold bright_cyan]{uncompressed_token_count}[/bold bright_cyan]"
     )
+
+    if compress:
+        preprocess_text(output_file, processed_file)
+
+        compressed_text = safe_file_read(processed_file)
+        compressed_token_count = get_token_count(compressed_text)
+        print(
+            f"\n[bright_green]Compressed Token Count:[/bright_green] [bold bright_cyan]{compressed_token_count}[/bold bright_cyan]"
+        )
 
     print(
         "\n[bold bright_yellow]compressed_output.txt[/bold bright_yellow] and [bold bright_blue]uncompressed_output.txt[/bold bright_blue] have been created in the working directory."

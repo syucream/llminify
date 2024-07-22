@@ -1,3 +1,4 @@
+from typing import Annotated
 import typer
 
 from command.minify import run_minify
@@ -5,15 +6,9 @@ from command.minify import run_minify
 app = typer.Typer()
 
 
-@app.command()
-def minify(path: str):
-    run_minify(path)
-
-
-@app.command()
-def version():
-    typer.echo("llminify 0.0.1")
+def main(path: str, compress: Annotated[bool, typer.Option(help="")] = False):
+    run_minify(path, compress)
 
 
 if __name__ == "__main__":
-    app()
+    typer.run(main)
