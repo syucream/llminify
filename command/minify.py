@@ -3,7 +3,7 @@ from transform.check import get_token_count
 from transform.preprocess import preprocess_text
 
 
-def safe_file_read(filepath, fallback_encoding="latin1"):
+def safe_file_read(filepath: str, fallback_encoding="latin1") -> str:
     try:
         with open(filepath, "r", encoding="utf-8") as file:
             return file.read()

@@ -1,7 +1,7 @@
 import tiktoken
 
 
-def get_token_count(text, disallowed_special=[], chunk_size=1000):
+def get_token_count(text: str, disallowed_special=[], chunk_size=1000) -> int:
     enc = tiktoken.get_encoding("cl100k_base")
 
     # Split the text into smaller chunks
