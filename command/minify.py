@@ -1,3 +1,4 @@
+import tempfile
 from source.localfile import process_local_folder
 from transform.check import get_token_count
 from transform.preprocess import preprocess_text
@@ -12,25 +13,28 @@ def safe_file_read(filepath: str, fallback_encoding="latin1") -> str:
             return file.read()
 
 
-def run_minify(path: str, compress: bool):
-    output_file = "uncompressed_output.txt"
-    processed_file = "compressed_output.txt"
-
-    process_local_folder(path, output_file)
-
-    uncompressed_text = safe_file_read(output_file)
-    uncompressed_token_count = get_token_count(uncompressed_text)
-    print(
-        f"[bright_green]Uncompressed Token Count:[/bright_green] [bold bright_cyan]{uncompressed_token_count}[/bold bright_cyan]"
-    )
-
+def run_minify(path: str, compress: bool, filename: str | None) -> None:
     if compress:
-        preprocess_text(output_file, processed_file)
+        filename = filename if filename else "compressed_output.txt"
 
-        compressed_text = safe_file_read(processed_file)
+        with tempfile.NamedTemporaryFile(delete=False) as f:
+            process_local_folder(path, f.name)
+            preprocess_text(f.name, filename)
+
+        compressed_text = safe_file_read(filename)
         compressed_token_count = get_token_count(compressed_text)
         print(
             f"\n[bright_green]Compressed Token Count:[/bright_green] [bold bright_cyan]{compressed_token_count}[/bold bright_cyan]"
+        )
+    else:
+        filename = filename if filename else "uncompressed_output.txt"
+
+        process_local_folder(path, filename)
+
+        uncompressed_text = safe_file_read(filename)
+        uncompressed_token_count = get_token_count(uncompressed_text)
+        print(
+            f"[bright_green]Uncompressed Token Count:[/bright_green] [bold bright_cyan]{uncompressed_token_count}[/bold bright_cyan]"
         )
 
     print(
