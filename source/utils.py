@@ -1,27 +1,34 @@
+import os
 from nbconvert import PythonExporter
 import nbformat
 
 
+DEFAULT_ALLOWED_EXTENSIONS = [
+    "py",
+    "txt",
+    "js",
+    "tsx",
+    "ts",
+    "md",
+    "cjs",
+    "html",
+    "json",
+    "ipynb",
+    "h",
+    "localhost",
+    "sh",
+    "yaml",
+    "example",
+]
+
+
 # TODO enable to specify target filetypes at runtime
-def is_allowed_filetype(filename):
-    allowed_extensions = [
-        ".py",
-        ".txt",
-        ".js",
-        ".tsx",
-        ".ts",
-        ".md",
-        ".cjs",
-        ".html",
-        ".json",
-        ".ipynb",
-        ".h",
-        ".localhost",
-        ".sh",
-        ".yaml",
-        ".example",
-    ]
-    return any(filename.endswith(ext) for ext in allowed_extensions)
+def is_allowed_filetype(filename: str, extensions: list[str] = []) -> bool:
+    if len(extensions) == 0:
+        extensions = DEFAULT_ALLOWED_EXTENSIONS
+
+    fn, extension = os.path.splitext(filename)
+    return any(extension == "." + ext for ext in extensions)
 
 
 def process_ipynb_file(temp_file):

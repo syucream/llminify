@@ -13,12 +13,19 @@ def safe_file_read(filepath: str, fallback_encoding="latin1") -> str:
             return file.read()
 
 
-def run_minify(path: str, compress: bool, filename: str | None) -> None:
+def run_minify(
+    path: str, compress: bool, filename: str | None, extensions_str: str | None
+) -> None:
+    if extensions_str:
+        extensions: list[str] = extensions_str.split(",")
+    else:
+        extensions = []
+
     if compress:
         filename = filename if filename else "compressed_output.txt"
 
         with tempfile.NamedTemporaryFile(delete=False) as f:
-            process_local_folder(path, f.name)
+            process_local_folder(path, extensions, f.name)
             preprocess_text(f.name, filename)
 
         compressed_text = safe_file_read(filename)
@@ -29,7 +36,7 @@ def run_minify(path: str, compress: bool, filename: str | None) -> None:
     else:
         filename = filename if filename else "uncompressed_output.txt"
 
-        process_local_folder(path, filename)
+        process_local_folder(path, extensions, filename)
 
         uncompressed_text = safe_file_read(filename)
         uncompressed_token_count = get_token_count(uncompressed_text)
